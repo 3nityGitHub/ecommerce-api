@@ -29,7 +29,9 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-
+    read_only: true
+    tmpfs:
+      - /tmp
 
 volumes:
   pgdata:
