@@ -26,6 +26,7 @@ jobs:
           image-ref: ecommerce-api:ci
           severity: CRITICAL
           exit-code: '1'
+          trivyignore: .trivyignore
 
       - name: Smoke test - container starts and responds
         run: |

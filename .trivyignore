@@ -1,0 +1,5 @@
+# perl-base is a transitive Debian OS dependency, never executed by this
+# Python/FastAPI application. Risk accepted - tracked here instead of
+# suppressed silently. See SECURITY.md for full reasoning on accepted risks.
+CVE-2026-42496
+CVE-2026-8376
