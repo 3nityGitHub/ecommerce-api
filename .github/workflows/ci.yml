@@ -26,7 +26,7 @@ jobs:
           image-ref: ecommerce-api:ci
           severity: CRITICAL
           exit-code: '1'
-          trivyignore: .trivyignore
+          trivyignores: .trivyignore
 
       - name: Smoke test - container starts and responds
         run: |
@@ -34,3 +34,22 @@ jobs:
           sleep 3
           curl -f http://localhost:8000/health
           docker rm -f smoke-test
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and push image
+        if: github.event_name == 'push'
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}
+          IMAGE=$(echo $IMAGE | tr '[:upper:]' '[:lower:]')
+          docker tag ecommerce-api:ci $IMAGE:${{ github.sha }}
+          docker tag ecommerce-api:ci $IMAGE:latest
+          docker push $IMAGE:${{ github.sha }}
+          docker push $IMAGE:latest
+
